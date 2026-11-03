@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La Marionetta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Raleway:wght@900&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#2a0709;overflow:hidden;font-family:system-ui,sans-serif;touch-action:none;user-select:none;-webkit-user-select:none}
+svg{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+[data-drag]{cursor:grab}
+.dragging [data-drag]{cursor:grabbing}
+#ui{position:fixed;left:0;right:0;bottom:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;pointer-events:none}
+#ui button{pointer-events:auto;font:600 15px system-ui;padding:10px 18px;border-radius:999px;border:2px solid #5a3c08;background:linear-gradient(#f4d58a,#d6a52a);color:#3a2410;cursor:pointer;box-shadow:0 3px 8px #0006}
+#ui button.on{background:linear-gradient(#fff,#f3ecd2);outline:3px solid #fff8}
+#hint{position:fixed;top:10px;left:0;right:0;text-align:center;color:#f3ecd2;font:500 14px system-ui;opacity:.85;pointer-events:none;text-shadow:0 1px 3px #000}
+</style></head>
+<body>
+<div id="hint">Trascina la croce (o il busto) per muoverlo · afferra mani e gambe per farle muovere</div>
+<svg id="s" viewBox="0 0 1200 2000" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+<defs>
+ <radialGradient id="bg" cx="50%" cy="38%" r="75%"><stop offset="0" stop-color="#b3322e"/><stop offset=".55" stop-color="#6e1618"/><stop offset="1" stop-color="#2a0709"/></radialGradient>
+ <linearGradient id="wood" x1="0" x2="1"><stop offset="0" stop-color="#a86d38"/><stop offset=".45" stop-color="#e2b27a"/><stop offset="1" stop-color="#9a6030"/></linearGradient>
+ <linearGradient id="jeans" x1="0" x2="1"><stop offset="0" stop-color="#1f2f4d"/><stop offset=".5" stop-color="#2f4673"/><stop offset="1" stop-color="#1a2742"/></linearGradient>
+ <linearGradient id="tee" x1="0" x2="1"><stop offset="0" stop-color="#0c0c0d"/><stop offset=".5" stop-color="#1d1d20"/><stop offset="1" stop-color="#0b0b0c"/></linearGradient>
+ <linearGradient id="brass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff2b0"/><stop offset=".5" stop-color="#d6a52a"/><stop offset="1" stop-color="#8a6212"/></linearGradient>
+ <radialGradient id="spot" cx="50%" cy="45%" r="50%"><stop offset="0" stop-color="#ffe9b0" stop-opacity=".35"/><stop offset="1" stop-color="#ffe9b0" stop-opacity="0"/></radialGradient>
+ <pattern id="grain" width="22" height="80" patternUnits="userSpaceOnUse">
+  <path d="M3 0V80M9 0V50M15 20V80M19 0V30" stroke="#6b3f1a" stroke-opacity=".28" stroke-width="1.6"/>
+ </pattern>
+</defs>
+<rect width="1200" height="2000" fill="url(#bg)"/>
+<g opacity=".18" stroke="#000" stroke-width="40"><path d="M80 0V2000M230 0V2000M380 0V2000M830 0V2000M980 0V2000M1130 0V2000"/></g>
+<ellipse cx="600" cy="1000" rx="620" ry="1000" fill="url(#spot)"/>
+<rect y="1890" width="1200" height="110" fill="#2a1408"/><rect y="1890" width="1200" height="8" fill="#8a5a2b"/>
+<ellipse id="shadow" cx="610" cy="1935" rx="260" ry="26" fill="#000" opacity=".45"/>
+
+<g id="strings" stroke="#f3ecd2" stroke-width="2.4" opacity=".9"></g>
+
+<g id="root">
+ <!-- legs -->
+ <g id="legL" data-drag="legL"></g>
+ <g id="legR" data-drag="legR"></g>
+ <!-- hips -->
+ <path d="M401 1090 H827 V1200 Q827 1240 790 1240 H438 Q401 1240 401 1200 Z" fill="url(#tee)"/>
+ <rect x="401" y="1196" width="426" height="28" fill="#3a2410"/>
+ <rect x="590" y="1194" width="48" height="32" rx="4" fill="url(#brass)" stroke="#5a3c08" stroke-width="2"/>
+ <!-- forearms -->
+ <g id="armL" data-drag="armL"></g>
+ <g id="armR" data-drag="armR"></g>
+ <!-- photo -->
+ <image data-drag="bar" href="photo.png" x="261" y="300" width="678" height="800"/>
+ <g pointer-events="none">
+  <!-- stampa GiN sulla maglietta: se aggiungi logo.png accanto a index.html viene usato al posto della scritta -->
+  <g id="gin" transform="rotate(-1.5 590 900)">
+   <g id="ginText">
+    <text x="590" y="905" text-anchor="middle" font-family="Raleway,system-ui,sans-serif" font-weight="900" font-size="150" fill="#FFD21F" letter-spacing="-4">GiN</text>
+    <path d="M470 935 q30 -26 60 0 t60 0 t60 0 t60 0" fill="none" stroke="#FF5FA8" stroke-width="12" stroke-linecap="round"/>
+    <text x="590" y="985" text-anchor="middle" font-family="Raleway,system-ui,sans-serif" font-weight="900" font-size="34" fill="#FF5FA8" letter-spacing="14">APS</text>
+   </g>
+   <image id="ginLogo" x="440" y="790" width="300" height="200" preserveAspectRatio="xMidYMid meet" style="display:none"/>
+  </g>
+  <g stroke="#3a1d10" stroke-width="3.2" fill="none" stroke-linecap="round" opacity=".55">
+   <path d="M514 568 C 508 600, 514 625, 530 640"/><path d="M622 568 C 630 600, 624 625, 606 642"/>
+  </g>
+  <g fill="#e0523a" opacity=".22"><circle cx="500" cy="540" r="26"/><circle cx="640" cy="535" r="26"/></g>
+  <g fill="url(#brass)" stroke="#5a3c08" stroke-width="2"><circle cx="350" cy="708" r="10"/><circle cx="858" cy="700" r="10"/></g>
+  <g stroke="#5a3c08" stroke-width="2"><path d="M344 708h12M350 702v12M852 700h12M858 694v12"/></g>
+ </g>
+</g>
+
+<!-- control bar -->
+<g id="bar" data-drag="bar">
+ <rect x="320" y="70" width="560" height="42" rx="20" fill="url(#wood)" stroke="#6b3f1a" stroke-width="3.5"/>
+ <rect x="320" y="70" width="560" height="42" rx="20" fill="url(#grain)"/>
+ <rect x="505" y="130" width="230" height="36" rx="18" fill="url(#wood)" stroke="#6b3f1a" stroke-width="3.5"/>
+ <rect x="577" y="8" width="46" height="190" rx="22" fill="url(#wood)" stroke="#6b3f1a" stroke-width="3.5"/>
+ <rect x="577" y="8" width="46" height="190" rx="22" fill="url(#grain)"/>
+ <g fill="url(#brass)" stroke="#5a3c08" stroke-width="2">
+  <circle cx="345" cy="112" r="6"/><circle cx="855" cy="112" r="6"/><circle cx="440" cy="112" r="6"/><circle cx="760" cy="112" r="6"/>
+  <circle cx="560" cy="112" r="6"/><circle cx="590" cy="112" r="6"/><circle cx="520" cy="152" r="6"/><circle cx="700" cy="152" r="6"/>
+ </g>
+</g>
+</svg>
+<div id="ui">
+ <button data-a="wave">👋 Saluta</button>
+ <button data-a="dance">💃 Balla</button>
+ <button data-a="walk">🚶 Cammina</button>
+ <button data-a="">⏹ Riposo</button>
+</div>
+<script>
+const NS='http://www.w3.org/2000/svg';
+const $=id=>document.getElementById(id);
+const svg=$('s');
+const wood=(x,y,w,h,r)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="url(#wood)" stroke="#6b3f1a" stroke-width="3"/><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="url(#grain)"/>`;
+const joint=(x,y,r,rr)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="url(#wood)" stroke="#6b3f1a" stroke-width="3"/><circle cx="${x}" cy="${y}" r="${rr}" fill="url(#brass)" stroke="#5a3c08" stroke-width="2"/>`;
+const shoe=`<path d="M420 1730 h160 v95 q0 40 -40 40 h-150 q-30 0 -30 -35 v-10 q0 -20 25 -25 z" fill="#2b170b"/>`;
+
+// legs: hip pivot H, knee K0
+function leg(id,cx,mirror){
+  const H=[cx,1190],K=[cx,1445];
+  $(id).innerHTML=
+   `<rect x="${cx-75}" y="1180" width="150" height="270" rx="26" fill="url(#jeans)"/>`+
+   `<g id="${id}s" transform="rotate(0 ${K[0]} ${K[1]})">`+
+     `<rect x="${cx-68}" y="1440" width="136" height="300" rx="22" fill="url(#jeans)"/>`+
+     `<g transform="${mirror?'translate(1240 0) scale(-1 1)':''}">${shoe}</g>`+
+     joint(cx,1735,30,7)+
+   `</g>`+
+   joint(cx,1445,42,9)+joint(cx,1190,40,9);
+}
+leg('legL',500,false);leg('legR',740,true);
+// arms: elbow E
+function arm(id,ex){
+  $(id).innerHTML=
+   wood(ex-34,1105,68,210,30)+
+   `<path d="M${ex-28} 1300 h56 q22 0 22 30 v50 q0 42 -34 42 h-12 q-34 0 -34 -42 v-50 q0 -30 2 -30z" fill="url(#wood)" stroke="#6b3f1a" stroke-width="3"/>`+
+   `<path d="M${ex} 1345 v60 M${ex+20} 1345 v60" stroke="#6b3f1a" stroke-width="2.5" stroke-linecap="round" opacity=".8"/>`+
+   `<circle cx="${ex}" cy="1112" r="11" fill="url(#brass)" stroke="#5a3c08" stroke-width="2"/><circle cx="${ex}" cy="1290" r="7" fill="url(#brass)" stroke="#5a3c08" stroke-width="2"/>`;
+}
+arm('armL',346);arm('armR',869);
+
+// strings
+const strDefs=[ // [bar anchor, kind, target]
+ {a:[560,112],t:['body',520,322]},{a:[590,112],t:['body',590,312]},
+ {a:[440,112],t:['body',350,705]},{a:[760,112],t:['body',858,700]},
+ {a:[345,112],t:['armL',346,1290]},{a:[855,112],t:['armR',869,1290]},
+ {a:[520,152],t:['legL',500,1445]},{a:[700,152],t:['legR',740,1445]}];
+strDefs.forEach(d=>{d.el=document.createElementNS(NS,'line');$('strings').appendChild(d.el)});
+
+// logo opzionale
+(()=>{const i=new Image();i.onload=()=>{$('ginLogo').setAttribute('href','logo.png');$('ginLogo').style.display='';$('ginText').style.display='none'};i.src='logo.png'})();
+// state
+const C=[600,117];
+const bar={x:600,y:117,tx:600,ty:117,vx:0,vy:0,ax:0,tilt:0};
+const mkA=(k,c)=>({th:0,w:0,t:0,k,c});
+const P={psi:mkA(6,1.0),
+ armL:mkA(14,2.2),armR:mkA(14,2.2),
+ legL:mkA(12,2.0),legR:mkA(12,2.0),
+ shL:mkA(10,1.8),shR:mkA(10,1.8)};
+const held={};  // limb -> true while pointer drags it
+let mode='',t0=0;
+const lim={armL:[-.35,3.0],armR:[-3.0,.35],legL:[-.25,1.1],legR:[-1.1,.25]};
+const E={armL:[346,1112],armR:[869,1112],legL:[500,1190],legR:[740,1190]};
+const rot=(p,a,c=[0,0])=>{const s=Math.sin(a),co=Math.cos(a),x=p[0]-c[0],y=p[1]-c[1];return[c[0]+co*x-s*y,c[1]+s*x+co*y]};
+// SVG rotate(a) maps (x,y)->(cos x - sin y, sin x + cos y); positive = clockwise on screen
+function toWorldRoot(p){const q=rot(p,P.psi.th,C);return[q[0]+bar.x-600,q[1]+bar.y-117]}
+function fromWorldRoot(q){const p=[q[0]-(bar.x-600),q[1]-(bar.y-117)];return rot(p,-P.psi.th,C)}
+function limbPoint(kind,x,y){
+  let p=[x,y];
+  if(kind==='armL'||kind==='armR') p=rot(p,P[kind].th,E[kind]);
+  else if(kind==='legL'||kind==='legR'){
+    const K=[E[kind][0],1445], sh=P[kind==='legL'?'shL':'shR'].th;
+    p=rot(p,sh,K); p=rot(p,P[kind].th,E[kind]);
+  }
+  return toWorldRoot(p);
+}
+
+// pointer
+let drag=null;
+function ptr(e){const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const m=svg.getScreenCTM().inverse();const r=pt.matrixTransform(m);return[r.x,r.y]}
+svg.addEventListener('pointerdown',e=>{
+  const el=e.target.closest('[data-drag]');if(!el)return;
+  const k=el.dataset.drag;svg.setPointerCapture(e.pointerId);
+  mode&&setMode('');
+  const p=ptr(e);
+  if(k==='bar'){drag={k,off:[p[0]-bar.tx,p[1]-bar.ty]}}
+  else{drag={k};held[k]=true;if(k.startsWith('leg')){held[k==='legL'?'shL':'shR']=true}}
+  document.body.classList.add('dragging');
+});
+svg.addEventListener('pointermove',e=>{
+  if(!drag)return;const p=ptr(e);
+  if(drag.k==='bar'){bar.tx=Math.max(330,Math.min(870,p[0]-drag.off[0]));bar.ty=Math.max(30,Math.min(300,p[1]-drag.off[1]))}
+  else{
+    const q=fromWorldRoot(p),h=E[drag.k];
+    let a=Math.atan2(-(q[0]-h[0]),q[1]-h[1]);
+    const [lo,hi]=lim[drag.k];a=Math.max(lo,Math.min(hi,a));
+    P[drag.k].t=a;
+  }
+});
+const end=()=>{if(!drag)return;if(drag.k!=='bar'){held[drag.k]=false;held.shL=held.shR=false;P[drag.k].t=0}drag=null;document.body.classList.remove('dragging')};
+svg.addEventListener('pointerup',end);svg.addEventListener('pointercancel',end);
+
+// buttons
+function setMode(m){mode=m;t0=performance.now()/1000;document.querySelectorAll('#ui button').forEach(b=>b.classList.toggle('on',b.dataset.a===m&&m!==''))}
+document.querySelectorAll('#ui button').forEach(b=>b.onclick=()=>setMode(b.dataset.a));
+
+function auto(t){
+  const T={};
+  if(mode==='wave'){T.armL=2.5+.45*Math.sin(t*9);T.bx=600+25*Math.sin(t*1.5)}
+  if(mode==='dance'){
+    T.armL=1.9+.9*Math.sin(t*4);T.armR=-1.9-.9*Math.sin(t*4+Math.PI);
+    T.legL=Math.max(0,.55*Math.sin(t*4+Math.PI/2)); T.legR=-Math.max(0,.55*Math.sin(t*4-Math.PI/2));
+    T.bx=600+170*Math.sin(t*2);T.by=117+45*Math.abs(Math.sin(t*4));
+  }
+  if(mode==='walk'){
+    T.legL=Math.max(0,.65*Math.sin(t*5)); T.legR=-Math.max(0,.65*Math.sin(t*5+Math.PI));
+    T.armL=.5*Math.max(0,Math.sin(t*5+Math.PI));T.armR=-.5*Math.max(0,Math.sin(t*5));
+    T.bx=600+120*Math.sin(t*1.2);T.by=117+22*Math.abs(Math.sin(t*5));
+  }
+  return T;
+}
+
+function step(dt,now){
+  const T=mode?auto(now-t0):{};
+  if(mode&&!(drag&&drag.k==='bar')){if(T.bx!=null){bar.tx=T.bx;bar.ty=T.by!=null?T.by:117}}
+  if(mode&&mode!=='wave'||mode==='wave'){}
+  for(const k of ['armL','armR','legL','legR']) if(T[k]!=null&&!held[k]) P[k].t=T[k]; else if(T[k]==null&&mode&&!held[k]) P[k].t=0;
+  // bar motion
+  const ox=bar.x,oy=bar.y,ovx=bar.vx;
+  bar.x+=(bar.tx-bar.x)*Math.min(1,dt*16);bar.y+=(bar.ty-bar.y)*Math.min(1,dt*16);
+  const vx=(bar.x-ox)/dt;
+  const ax=Math.max(-9000,Math.min(9000,(vx-ovx)/dt));
+  bar.vx=vx;bar.ax+=(ax-bar.ax)*Math.min(1,dt*20);
+  bar.tilt+=((Math.max(-.2,Math.min(.2,vx*.00012)))-bar.tilt)*Math.min(1,dt*8);
+  // springs
+  const spr=(a,sens,stiff)=>{
+    const k=stiff?a.k*4:a.k,c=stiff?a.c*3:a.c;
+    a.w+=(-k*(a.th-a.t)-c*a.w-bar.ax*sens)*dt;
+    a.th+=a.w*dt;
+  };
+  P.psi.t=0;spr(P.psi,.00045,false);P.psi.th=Math.max(-.45,Math.min(.45,P.psi.th));
+  for(const k of ['armL','armR']){spr(P[k],.0013,held[k]);const[lo,hi]=lim[k];P[k].th=Math.max(lo-.6,Math.min(hi+.3,P[k].th))}
+  for(const k of ['legL','legR']){spr(P[k],.0009,held[k]);const[lo,hi]=lim[k];P[k].th=Math.max(lo-.3,Math.min(hi+.2,P[k].th))}
+  P.shL.t=-P.legL.t*.9;P.shR.t=-P.legR.t*.9;
+  spr(P.shL,.0014,false);spr(P.shR,.0014,false);
+  P.shL.th=Math.max(-1.3,Math.min(.4,P.shL.th));P.shR.th=Math.max(-.4,Math.min(1.3,P.shR.th));
+}
+const deg=r=>r*180/Math.PI;
+function render(){
+  const dx=bar.x-600,dy=bar.y-117;
+  $('root').setAttribute('transform',`translate(${dx} ${dy}) rotate(${deg(P.psi.th)} ${C[0]} ${C[1]})`);
+  $('bar').setAttribute('transform',`translate(${dx} ${dy}) rotate(${deg(bar.tilt)} ${C[0]} ${C[1]})`);
+  for(const k of ['armL','armR']) $(k).setAttribute('transform',`rotate(${deg(P[k].th)} ${E[k][0]} ${E[k][1]})`);
+  for(const [k,s] of [['legL','shL'],['legR','shR']]){
+    $(k).setAttribute('transform',`rotate(${deg(P[k].th)} ${E[k][0]} ${E[k][1]})`);
+    $(k+'s').setAttribute('transform',`rotate(${deg(P[s].th)} ${E[k][0]} ${1445})`);
+  }
+  $('shadow').setAttribute('cx',610+dx*.9);
+  // strings
+  for(const d of strDefs){
+    const a=rot(d.a,bar.tilt,C);const aw=[a[0]+dx,a[1]+dy];
+    const [kind,x,y]=d.t;
+    const b=kind==='body'?toWorldRoot([x,y]):limbPoint(kind,x,y);
+    d.el.setAttribute('x1',aw[0]);d.el.setAttribute('y1',aw[1]);d.el.setAttribute('x2',b[0]);d.el.setAttribute('y2',b[1]);
+  }
+}
+let last=performance.now()/1000;
+function loop(){
+  const now=performance.now()/1000;const dt=Math.min(.033,now-last||.016);last=now;
+  step(dt,now);render();requestAnimationFrame(loop);
+}
+loop();
+</script>
+</body></html>
